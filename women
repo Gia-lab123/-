@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>三八妇女节：为你抽取一份专属寄语</title>
+    <style>
+        /* 全局样式重置与字体设定 */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: "PingFang SC", "Microsoft YaHei", sans-serif;
+            /* 柔和的紫粉色渐变背景 */
+            background: linear-gradient(135deg, #fdfcfb 0%, #e2d1c3 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            color: #333;
+        }
+
+        /* 主容器卡片样式 */
+        .container {
+            background-color: rgba(255, 255, 255, 0.95);
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            max-width: 600px;
+            width: 100%;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            transition: transform 0.3s ease;
+        }
+
+        .container:hover {
+            transform: translateY(-5px);
+        }
+
+        /* 标题样式 */
+        h1 {
+            color: #7A4988; /* 紫罗兰色 */
+            margin-bottom: 10px;
+            font-size: 1.8rem;
+        }
+
+        .subtitle {
+            color: #666;
+            margin-bottom: 30px;
+            font-size: 1rem;
+        }
+
+        /* 箴言显示区域样式 */
+        #quote-display {
+            min-height: 120px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 1.3rem;
+            line-height: 1.6;
+            color: #4A4A4A;
+            font-weight: 500;
+            padding: 20px;
+            margin-bottom: 30px;
+            background-color: #f8f4f9;
+            border-radius: 12px;
+            border-left: 5px solid #d487a7;
+            /* 初始状态的淡入动画 */
+            animation: fadeIn 0.5s ease-in;
+        }
+
+        /* 按钮样式 */
+        #draw-btn {
+            background: linear-gradient(45deg, #d487a7, #7A4988);
+            color: white;
+            border: none;
+            padding: 15px 35px;
+            font-size: 1.1rem;
+            border-radius: 50px;
+            cursor: pointer;
+            box-shadow: 0 5px 15px rgba(122, 73, 136, 0.3);
+            transition: all 0.3s ease;
+            outline: none;
+        }
+
+        #draw-btn:hover {
+            background: linear-gradient(45deg, #e09ab5, #8e5a9e);
+            box-shadow: 0 8px 20px rgba(122, 73, 136, 0.4);
+            transform: scale(1.05);
+        }
+
+        #draw-btn:active {
+            transform: scale(0.98);
+        }
+
+        /* 简单的淡入动画关键帧 */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        /* 用于JS切换的动画类 */
+        .fade-in-animation {
+            animation: fadeIn 0.6s ease-in-out forwards;
+        }
+
+        /* 底部版权/说明 */
+        .footer {
+            margin-top: 25px;
+            font-size: 0.8rem;
+            color: #999;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>✨ 三八国际妇女节 ✨</h1>
+        <p class="subtitle">点击下方按钮，抽取一份属于你的节日寄语</p>
+        
+        <!-- 箴言显示区域，初始有一条默认信息 -->
+        <div id="quote-display">
+            准备好了吗？<br>接收一份来自节日的温暖与力量。
+        </div>
+
+        <button id="draw-btn">🌹 点击抽取箴言 🌹</button>
+
+        <div class="footer">
+            祝每一位女性节日快乐，自由且闪耀。
+        </div>
+    </div>
+
+    <script>
+        // --- 核心部分：箴言数据库 ---
+        // 这里严格筛选了内容，确保积极、赋权、尊重。
+        // 涵盖了自我成长、职业发展、生活态度、拒绝定义等多个维度。
+        const quotes = [
+            "你不一定要长成玫瑰，你乐意的话，可以做茉莉，做雏菊，做无名小花，做千千万万。",
+            "愿你不仅在节日里快乐，更在每个平凡的日子里，拥有不被定义的自由。",
+            "你的价值不取决于任何人的评价，而在你对自己坚定的认同。",
+            "去发光，而不是被照亮；去定义自己，而不是被贴上标签。",
+            "祝你拥有坚韧的灵魂，和柔软的内心；能抵挡风雨，也懂得拥抱阳光。",
+            "女性的力量，是温柔地推翻世界，再温柔地重建它。",
+            "请记住，先爱自己，再去爱这个世界；你不仅是谁的女儿、妻子或母亲，你首先是你自己。",
+            "愿你在自己热爱的领域里，闪闪发光，步履不停。",
+            "不必追求成为“完美的女性”，只愿你成为“真实的自己”。",
+            "你的存在本身就是一种美好，无需向任何人证明。",
+            "祝你拥有拒绝的勇气，也有拥抱未知的底气。",
+            "世界因为有了女性的智慧与坚韧，而变得更加完整和丰富。",
+            "愿你的生活里有热汤和甜食，背包里有书本和远方，心中有梦想和善良。",
+            "不要让年龄成为你的束缚，每一个当下都是你最美的年华。",
+            "你不需要穿上高跟鞋才能证明高度，你站在那里，就足够挺拔。",
+            "愿你像树一样扎根，像鸟一样飞翔，既有依靠，亦有自由。",
+            "温柔不代表软弱，那是你对这个世界最大的善意和包容。",
+            "祝你精神富有，灵魂自由，眼中有光，心中有爱。",
+            "你付出的努力，或许不会立刻开花结果，但它们正在扎根，终将长成参天大树。",
+            "无论你选择搞事业还是顾家庭，只要是出自本心，你都值得最热烈的掌声。",
+            "愿你的眼里总有星河，笑里全是坦荡。",
+            "别忘了赞美自己，你比你想象中更勇敢、更坚强、更有才华。",
+            "祝你在喧嚣的世界里，总能找到属于自己的一方宁静天地。",
+            "你的敏感不是缺点，那是你感知世界美好的天赋。",
+            "像风一样自由，像火一样热烈，去经历，去感受，去活出精彩的一生。",
+            "无需仰望别人，自己亦是风景。",
+            "愿你独立平等，骄傲自由，一切美好皆属于你。",
+            "做自己的女王，不卑不亢，不慌不忙。"
+        ];
+
+        // 获取DOM元素
+        const quoteDisplay = document.getElementById('quote-display');
+        const drawBtn = document.getElementById('draw-btn');
+
+        // 用于记录上一次的索引，防止连续重复
+        let lastIndex = -1;
+
+        // 抽取箴言的函数
+        function drawQuote() {
+            // 简单的防抖，避免用户疯狂点击
+            drawBtn.disabled = true;
+            setTimeout(() => { drawBtn.disabled = false; }, 600);
+
+            let randomIndex;
+            
+            // 确保不会连续抽到同一条（如果库很大，这个概率很小，但为了体验加个保险）
+            do {
+                randomIndex = Math.floor(Math.random() * quotes.length);
+            } while (randomIndex === lastIndex && quotes.length > 1);
+
+            // 更新上一次的索引
+            lastIndex = randomIndex;
+
+            // 移除旧的动画类，以便重新触发动画
+            quoteDisplay.classList.remove('fade-in-animation');
+            // 强制浏览器重绘 (Reflow)，这是重新触发 CSS 动画的关键技巧
+            void quoteDisplay.offsetWidth; 
+            
+            // 更新文本内容
+            quoteDisplay.textContent = quotes[randomIndex];
+            
+            // 添加动画类，开始播放动画
+            quoteDisplay.classList.add('fade-in-animation');
+        }
+
+        // 为按钮添加点击事件监听器
+        drawBtn.addEventListener('click', drawQuote);
+
+        // 可选：页面加载时自动抽取一条（如果不想要，注释掉下面这行即可）
+        // window.onload = drawQuote;
+    </script>
+</body>
+</html>
